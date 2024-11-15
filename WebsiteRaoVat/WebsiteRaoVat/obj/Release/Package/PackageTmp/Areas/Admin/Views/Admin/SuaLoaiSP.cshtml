@@ -1,0 +1,225 @@
+﻿@using WebsiteRaoVat.Models
+@model LoaiSanPham
+
+@{
+    ViewBag.Title = "SuaLoaiSP";
+    Layout = "~/Areas/Admin/Views/Admin/layoutAdmin.cshtml";
+}
+@{IEnumerable<LoaiSanPham> lstSanPham = ViewBag.MaDanhMuc as IEnumerable<LoaiSanPham>;}
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item">Loại sản phẩm</li>
+        <li class="breadcrumb-item active">Sửa loại sản phẩm</li>
+    </ol>
+</nav>
+<section class="py-3" style="background-color: #fff;">
+    <div class="row" style=" margin:1px; padding:3rem">
+        <div class="col-5">
+            <input hidden value="@Model.Hinh" id="txtHinh" />
+            <input id="txtMaBai" value="@Model.MaLoaiSP" hidden />
+            <div class="w3-content w3-display-container" id="imgPro" style="margin-bottom:1rem">
+
+                @if (Model.Hinh != null)
+                {
+                    <img class="mySlides"  src="@Url.Content(""+Model.Hinh)">
+
+                }
+
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="col-6" style="margin-left:3rem">
+            <div class="row">
+                <table class="table table-borderless">
+                    <tbody>
+                        <tr>
+                            <th scope="row" width="20%">Loại sản phẩm</th>
+                            <td><input type="text" class="form-control" id="txtTen" value="@Model.TenLoaiSP" /></td>
+                            @*<td>@Html.EditorFor(model => model.TenDanhMuc, new { htmlAttributes = new { @class = "form-control", @id ="txtTen" } })</td>*@
+                        </tr>
+                        <tr>
+                            <th scope="row" width="20%">Tên danh mục</th>
+                            <td>@Html.DropDownList("MaDanhMuc", null, new { @class = "form-control", @id = "MaDanhMuc", @style = "background-image:none" })</td>
+                        </tr>
+                        <tr>
+                            <th scope="row">Hình ảnh</th>
+                            <td>
+                                <input accept="image/*" onchange="" id="txtimg" name="image" type="file">
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+                <button class="btn btn-xs btn-success text-white" style="margin-left:10px" id="btnDuyet">Sửa</button>
+                <a class="btn btn-xs btn-danger text-white" style="margin-left:10px" href="/Admin/Admin/LoaiSP">Thoát</a>
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+</section>
+<div class="modal" id="modalDuyet">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận</h5>
+                <button type="button" class="close" onclick="modalClose()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="btnMess">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnDongY">Đồng ý</button>
+                <button type="button" class="btn btn-secondary" onclick="modalClose()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .w3-content, .w3-auto {
+        margin-left: 2px;
+        max-width: 500px;
+        float: left;
+    }
+
+    .w3-text-white, .w3-hover-text-white:hover {
+        color: #fff !important;
+    }
+
+    .mySlides {
+        display: none;
+        width: 495px;
+        height: 465px;
+    }
+
+    .w3-left, .w3-right, .w3-badge {
+        cursor: pointer
+    }
+
+    .w3-badge {
+        height: 13px;
+        width: 13px;
+        padding: 0
+    }
+</style>
+<script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function currentDiv(n) {
+        showDivs(slideIndex = n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        if (n > x.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = x.length }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-white", "");
+        }
+        x[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " w3-white";
+    }
+
+
+</script>
+@section Jsfooter{
+    <script>
+        var img = "" + $('#txtHinh').val();
+        var trangthai = 2;
+        var ma = $("#txtMaBai").val();
+        $(document).ready(function () {
+
+            $('#txtimg').change(function () {
+                if ($('#txtimg').val().length > 0) {
+                    if (window.FormData !== undefined) {
+                        var fileupload = $('#txtimg').get(0);
+                        var file = fileupload.files;
+                        var formdata = new FormData();
+                        formdata.append('file', file[0]);
+                        $.ajax({
+                            type: 'POST',
+                            url: '/Home/XuLyFile ',
+                            contentType: false, //Khong co hear
+                            processData: false,//Khong Xu Ly Du Lieu
+                            data: formdata,
+                            success: function (ImageData) {
+                                $('#imgPro').empty();
+                                $('#imgPro').append(`<img src="` + ImageData + `"/>`);
+                                img = ImageData;
+                                //location.reload();
+                            }
+                        });
+                    }
+                } else {
+                    alert("Vui lòng chọn file");
+                }
+            });
+        });
+
+        $('#btnDuyet').on('click', function () {
+            trangthai = 0;
+            $('#btnMess').empty();
+            $('#btnMess').append('<p>Bạn chắc chắn sửa loại sản phẩm</p>');
+            $('#modalDuyet').show();
+
+        });
+
+        function modalClose() {
+            $('#modalDuyet').hide();
+
+        }
+        $('#btnTuchoi').on('click', function () {
+            trangthai = 1;
+            $('#btnMess').empty();
+            $('#btnMess').append('<p>Bạn chắc chắn từ chối bài viết</p>');
+            $('#modalDuyet').show();
+
+        });
+        $('#btnDongY').click(function () {
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Admin/UpdateLoaiSP',
+                data: {
+                    MaDanhMuc: $("#MaDanhMuc").val(),
+                    Ten: $("#txtTen").val(),
+                    maloai: ma,
+                    Hinh: img,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("Thao tác thành công");
+                        window.location = "/Admin/Admin/LoaiSP";
+                    }
+                }
+
+            });
+        });
+
+
+    </script>
+}
+
+
+

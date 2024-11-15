@@ -1,0 +1,291 @@
+﻿@model List<WebsiteRaoVat.Models.QuangCao>
+@{
+    ViewBag.Title = "DSTinDang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<input hidden id="txtID" value="@ViewBag.MaDanhMuc" />
+<section class="py-3" style="margin-top:10%">
+    <div class="container">
+        <div class="row">
+            <div class="col-7" id="frmBaiDang">
+
+                @*@foreach (var item in Model)
+                {
+                    <div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem;"  >
+                        <div class="col-lg-11">
+
+                            <div class="row" id="@item.MaBaiDang" name="frmSP">
+                                <div class="col-2" style="object-fit:cover; padding:0rem; ">
+                                    <img src="@item.BaiDang.HinhAnh" width="110" height="110" />
+                                </div>
+                                <div class="col-9" style="padding:0.5rem;">
+                                    <h5 style="margin-bottom:5px">@item.BaiDang.TieuDe </h5>
+                                    <h5 style="color:red; font-weight:700">@item.BaiDang.Gia</h5>
+                                    <div class="row" style="margin-left:0px; ">
+                                        <div class="icon" style="margin-top: 2px">
+                                            <img src="~/Images/flower_doodle_25px.png" width="20" />
+                                        </div>
+                                        <p style="margin-bottom:0px">Tin ưu tiên</p>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        
+                        <div class="col-1" style="padding:0.5rem; float:right">
+                            <div class="icon" style="float:right;">
+                                <i class="icon_heart_alt" style="font-size:20px"></i>
+                            </div>
+                        </div>
+                    </div>
+                }*@
+
+            </div>
+            <div class="col-4" id="sidebar" style="background-color:#fff; margin:1px; padding:1rem;height:600px">
+                <div class="container">
+                    <table class="table table-borderless">
+                        <tbody>
+
+                            <tr>
+                                <th scope="row" width="40%">Danh mục</th>
+                                <td>@ViewBag.TenDanhMuc</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Loại sản phẩm</th>
+                                <td><select class="form-control" id="drLoaiSP">
+                                    <option>Tất cả</option>
+                                    </select></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Tình trạng</th>
+                                <td>
+                                    <select class="form-control" id="drLoaiSP1">
+                                        <option>Tất cả</option>
+                                        <option value="true">Mới</option>
+                                        <option value="false">Đã sử dụng</option>
+                                    </select>
+                                </td>
+                            <tr>
+                                <th scope="row">Thời gian</th>
+                                <td>
+                                    <select class="form-control" id="drLoaiSP2">
+                                        <option value="1">Mới nhất</option>
+                                        <option value="2">Cũ nhất</option>
+                                    </select>
+                                </td>
+                               
+                            </tr>
+                            <tr>
+                                <th scope="row">Giá</th>
+                                <td><select class="form-control" id="drLoaiSP3">
+                                    <option value="1">Từ thấp đến cao</option>
+                                    <option value="2" >Từ cao tới thấp</option>
+                                 </select></td>
+                            </tr>
+                       
+                            
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</section>
+
+@section Jsfooter{
+    <script>
+        var madanhmuc = $('#txtID').val();
+        var arr = [];
+        $(document).ready(function () {
+           loadBaiDang();
+            getLoaiSP();
+        });
+        function getLoaiSP() {
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/getLoaiSP',
+                data: {
+                    id: madanhmuc,
+                },
+                success: function (data) {
+                    $.each(data.listLoaiSP, function (k, v) {
+                        $('#drLoaiSP').append('<option value="' + v.MaLoaiSP+'">' + v.TenLoaiSP+'</option>')
+                    });
+                }
+
+            })
+        }
+        function LoadDATA(data) {
+
+            $('#frmBaiDang').empty();
+            console.log(data.lstBaiDang);
+            $.each(data.lstBaiDang, function (k, v) {
+                let content = `<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem;">
+                                              <div class="col-lg-11">
+                                <div class="row"  id="` + v.MaBaiDang + ` " name="frmSP">
+                  <div class="col-2" style="object-fit:cover; padding:0rem; ">
+                                <img src="`+ v.HinhAnh + `" width="110" height="110"/>
+                            </div>
+                            <div class="col-9" style="padding:0.5rem;">
+                                    <h5 style="margin-bottom:5px">`+ v.TieuDe + `</h5>
+                                    <h5 style="color:red; font-weight:700">`+ v.Gia + ` đ   </h5>`
+                if (v.check < 10) {
+                    content += `<div class="row" style="margin-left:0px; ">
+                                <div class="icon" style="margin-top: 2px">
+                                    <img src="/Images/flower_doodle_25px.png" width="20" />
+                                </div>
+                                <p style="margin-bottom:0px">Tin ưu tiên</p>
+                            </div>`
+                }
+
+                content +=   `
+    <p style="margin-bottom:0px">`+ v.NgayDang +` </p> </div>
+         </div>
+                        </div>
+                            <div class="col-1" style="padding:0.5rem; float:right">
+                                <div id="` + v.MaBaiDang + ` " name="frmyeuthi"  class="icon" style="float:right;">
+                                    <i class="icon_heart_alt" style="font-size:20px"></i>
+                                </div>
+                            </div>
+                        </div>`;
+                $('#frmBaiDang').append(content);
+            });
+
+        }
+        function loadBaiDang() {
+            //alert($(this).val());
+       //     console.log(arr);
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/LocTheogia',
+                dataType: 'json',
+                data: {
+
+                    tinhtrang: 1,
+                    id: madanhmuc,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        LoadDATA(data);
+                    }
+                }
+
+            });
+        }
+
+        $(document).on('click', "div[name='frmyeuthi']", function () {              
+            if ($("#session").val() == 1) {
+                $(this).empty();
+                $(this).append('<i class="fa fa-heart" style="font-size:25px; color:red" ></i>');
+                $.ajax({
+                    type: 'post',
+                    url: '/TinDang/ThemTinYeuThich',
+                    data: {
+                        mabaidang: $(this).attr('id')
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert("Đã thêm vào danh sách yêu thích");
+
+                            //$.notify("Alert!", { align: "center", verticalAlign: "middle" });
+                        }
+                    }
+                });
+            } else {
+                $("#popup_login").show();
+            }
+            //window.location = '/TinDang/ThemTinYeuThich/' + $(this).attr('id');
+
+        });
+
+
+        $(document).on('click', "div[name='frmSP']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+
+        });
+        $('#drLoaiSP').change(function () {
+            //alert($(this).val());
+            console.log(arr);
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/LocTheoLoai',
+                dataType: 'json',
+                data: {
+                    arr: JSON.stringify(arr),
+                    maloai: $(this).val(),
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        LoadDATA(data);
+                    }
+
+
+                }
+            });
+        });
+        $('#drLoaiSP1').change(function () {
+            //alert($(this).val());
+            console.log(arr);
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/LocTheotinhtrang',
+                dataType: 'json',
+                data: {
+
+                    tinhtrang: $(this).val(),
+                    id: madanhmuc,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        LoadDATA(data)
+                    }
+                }
+
+            });
+        })
+        $('#drLoaiSP2').change(function () {
+            //alert($(this).val());
+            console.log(arr);
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/LocTheothoigian',
+                dataType: 'json',
+                data: {
+
+                    tinhtrang: $(this).val(),
+                    id: madanhmuc,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        LoadDATA(data);
+                    }
+                }
+
+            });
+        })
+        $('#drLoaiSP3').change(function () {
+            //alert($(this).val());
+            console.log(arr);
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/LocTheogia',
+                dataType: 'json',
+                data: {
+
+                    tinhtrang: $(this).val(),
+                    id: madanhmuc,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        LoadDATA(data);
+                    }
+                }
+
+            });
+        })
+    </script>
+}

@@ -1,0 +1,87 @@
+﻿
+@{
+    ViewBag.Title = "TimKiemTinDang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3" style="margin-top:10%">
+    <div class="container">
+        <div class="row" style="margin:1rem 0.5rem;">
+            <h5>Kết quả tìm kiếm cho từ khóa: <span style="color: red">@ViewBag.TuKhoa</span></h5>
+            <input hidden id="txtTuKhoa" value="@ViewBag.TuKhoa"/>
+        </div>
+    </div>
+    <div class="container" style="width: 100%" id="frmBaiDang">
+
+
+    </div>
+</section>
+
+@section Jsfooter{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/TimKiem',
+                data: {
+                    tukhoa: $('#txtTuKhoa').val()
+                }, success: function (data) {
+                    $('#frmBaiDang').empty();
+                    $.each(data.listbaidang, function (k, v) {
+                        var content = `<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem;">
+                                              <div class="col-lg-11">
+                                <div class="row"  id="` + v.MaBaiDang + ` " name="frmSP">
+                  <div class="col-2" style="object-fit:cover; padding:0rem; ">
+                                <img src="`+ v.HinhAnh + `" width="110" height="110"/>
+                            </div>
+                            <div class="col-9" style="padding:0.5rem;">
+                                    <h5 style="margin-bottom:5px">`+ v.TieuDe + `</h5>
+                                    <h5 style="color:red; font-weight:700">`+ v.Gia + ` đ   </h5><div class="row" style="margin-left:0px; ">
+                                <div class="icon" style="margin-top: 2px">
+                                    <img src="/Images/flower_doodle_25px.png" width="20" />
+                                </div>
+                                <p style="margin-bottom:0px">Tin ưu tiên</p>
+                            </div>
+    <p style="margin-bottom:0px">`+ v.NgayDang + ` </p> </div>
+         </div>
+                        </div>
+                            <div class="col-1" style="padding:0.5rem; float:right">
+                                <div id="` + v.MaBaiDang + ` " name="frmyeuthi"  class="icon" style="float:right;">
+                                    <i class="icon_heart_alt" style="font-size:20px"></i>
+                                </div>
+                            </div>
+                        </div>`;
+                        $('#frmBaiDang').append(content);
+                    });
+                    $.each(data.listbaithuong, function (k, v) {
+                        var content = `<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem;">
+                                              <div class="col-lg-11">
+                                <div class="row"  id="` + v.MaBaiDang + ` " name="frmSP">
+                  <div class="col-2" style="object-fit:cover; padding:0rem; ">
+                                <img src="`+ v.HinhAnh + `" width="110" height="110"/>
+                            </div>
+                            <div class="col-9" style="padding:0.5rem;">
+                                    <h5 style="margin-bottom:5px">`+ v.TieuDe + `</h5>
+                                    <h5 style="color:red; font-weight:700">`+ v.Gia + ` đ   </h5>
+    <p style="margin-bottom:0px">`+ v.NgayDang + ` </p> </div>
+         </div>
+                        </div>
+                            <div class="col-1" style="padding:0.5rem; float:right">
+                                <div id="` + v.MaBaiDang + ` " name="frmyeuthi"  class="icon" style="float:right;">
+                                    <i class="icon_heart_alt" style="font-size:20px"></i>
+                                </div>
+                            </div>
+                        </div>`;
+                        $('#frmBaiDang').append(content);
+                    });
+                }
+            });
+        })
+
+        $(document).on('click', "div[name='frmSP']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+
+        });
+    </script>
+}

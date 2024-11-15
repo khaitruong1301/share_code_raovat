@@ -1,0 +1,274 @@
+﻿@model WebsiteRaoVat.Models.BaiDang
+@{
+    ViewBag.Title = "BaiDang";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<section class="py-3" style="margin-top:10%">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px; padding:3rem">
+            <div class="col-6">
+                <input hidden value="@ViewBag.Session" id="txtSs" />
+                <div class="w3-content w3-display-container" id="@Model.MaBaiDang" style="margin-bottom:1rem">
+                    @{ var i = 0;}
+                    @if (Model.HinhAnh != null)
+                    {
+                        <img class="mySlides" src="@Url.Content(""+Model.HinhAnh)">
+                        i += 1;
+                    }
+                    @if (Model.HinhAnh1 != null)
+                    {
+                        <img class="mySlides" src="@Url.Content(""+Model.HinhAnh1)">
+                        i += 1;
+                    }
+                    @if (Model.HinhAnh2 != null)
+                    {
+                        <img class="mySlides" src="@Url.Content(""+Model.HinhAnh2)">
+                        i += 1;
+                    }
+                    @if (Model.HinhAnh3 != null)
+                    {
+                        <img class="mySlides" src="@Url.Content(""+Model.HinhAnh3)">
+                        i += 1;
+                    }
+                    @if (Model.HinhAnh4 != null)
+                    {
+                        <img class="mySlides" src="@Url.Content(""+Model.HinhAnh4)">
+                        i += 1;
+                    }
+                    <div class="w3-center w3-container w3-section w3-large w3-text-white w3-display-bottommiddle" style="width:100%;">
+                        @for (var j = 0; j < i; j++)
+                        {
+                            <span class="w3-badge demo w3-border w3-transparent w3-hover-white" onclick="currentDiv(@j)"></span>
+
+                        }
+                        <div class="w3-left w3-hover-text-khaki" onclick="plusDivs(-1)">&#10094;</div>
+                        <div class="w3-right w3-hover-text-khaki" onclick="plusDivs(1)">&#10095;</div>
+
+
+                    </div>
+
+                </div>
+                <h3 style="font-weight:500">@Model.TieuDe</h3>
+                <h3 style="font-weight:500; color:red">@Model.Gia.GetValueOrDefault(0).ToString("N0") đ</h3>
+            </div>
+
+
+            <div class="col-5" style="margin-left:3rem">
+                <div class="row">
+                    <div class="col-2" , style="padding:0">
+                        @if (Model.TaiKhoan.Hinh != null)
+                        {
+                            <img src="@Model.TaiKhoan.Hinh" class="img-dm" width="50" height="50" style="padding:0" />
+                        }
+                        else
+                        {
+                            <img src="~/Images/img_avatar.png" class="img-dm" width="50" height="50" style="padding:0" />
+                        }
+
+                    </div>
+                    <div class="col-6">
+                        <h5 style="font-weight:700; margin-top:0">@Model.TaiKhoan.TenNguoiDung</h5>
+                        <a href="/TinDang/TrangCaNhan/@Model.TaiKhoan.Username" style="color:#0094ff">Xem trang cá nhân</a>
+                        <input hidden id="txtNguoiBan" value="@Model.TaiKhoan.Username" />
+                    </div>
+
+                </div>
+                <div class="row" style="margin-top:2rem">
+
+                    <button class="btn btn-success " style="width:100%" id="btnChatVoiND">
+                        CHAT VỚI NGƯỜI BÁN
+                    </button>
+                </div>
+                @if (Model.TaiKhoan.SDT != null)
+                {
+                    <div class="row" style="margin-top:0.5rem">
+
+                        <button class="btn" style="width: 100%; border: solid 1px #28a745; color: #28a745 ">
+                            @Model.TaiKhoan.SDT
+                        </button>
+                    </div>
+                }
+                <div class="row" style="margin-top:2rem">
+                    <table class="table table-borderless">
+                        <tbody>
+
+                            <tr>
+                                <th scope="row" width="40%">Loại sản phẩm</th>
+                                <td>@Model.LoaiSanPham.TenLoaiSP</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Tình trạng</th>
+                                @if (Model.TinhTrang == false)
+                                {
+                                    <td>Đã sử dụng</td>
+                                }
+                                else
+                                {
+                                    <td>Mới</td>
+                                }
+                            </tr>
+                            <tr>
+                                <th scope="row">Ngày đăng</th>
+                                <td>@Model.NgayDang</td>
+                            </tr>
+                            @if (Model.TaiKhoan.DiaChi != null)
+                            {
+                                <tr>
+                                    <th scope="row">Địa chỉ</th>
+                                    <td>@Model.TaiKhoan.DiaChi</td>
+                                </tr>
+                            }
+                            <tr>
+                                <th scope="row">Mô tả</th>
+
+                            </tr>
+                            <tr>
+                                <td colspan="2">@Model.MoTa</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <input hidden id="txtMaDanhMuc" value="@Model.LoaiSanPham.MaDanhMuc" />
+</section>
+
+
+<section class="py-3">
+    <div class="container">
+        <div class="container" style="background-color:#fff; padding:1rem">
+            <h5 style="font-weight:700; margin:0rem 1.5rem">Tin liên quan</h5>
+            <div class="row" style="margin:0.5rem" id="frmSanPham">
+               
+            </div>
+            
+        </div>
+
+    </div>
+</section>
+<style>
+    .w3-content, .w3-auto {
+        margin-left: 2px;
+        max-width: 500px;
+        float: left;
+    }
+
+    .w3-text-white, .w3-hover-text-white:hover {
+        color: #fff !important;
+    }
+
+    .mySlides {
+        display: none;
+        width: 495px;
+        height: 465px;
+    }
+
+    .w3-left, .w3-right, .w3-badge {
+        cursor: pointer
+    }
+
+    .w3-badge {
+        height: 13px;
+        width: 13px;
+        padding: 0
+    }
+</style>
+<style>
+</style>
+<script>
+    var slideIndex = 1;
+    showDivs(slideIndex);
+
+    function plusDivs(n) {
+        showDivs(slideIndex += n);
+    }
+
+    function currentDiv(n) {
+        showDivs(slideIndex = n);
+    }
+
+    function showDivs(n) {
+        var i;
+        var x = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("demo");
+        if (n > x.length) { slideIndex = 1 }
+        if (n < 1) { slideIndex = x.length }
+        for (i = 0; i < x.length; i++) {
+            x[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" w3-white", "");
+        }
+        x[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " w3-white";
+    }
+
+    $("#btnChatVoiND").click(function () {
+        if ($("#session").val() == 1) {
+            //Xử lý.......
+            //if ($('txtSs').val() == )
+            $.ajax({
+                type: 'post',
+                url: '/Chat/AddMessage',
+                data: {
+                    username: $('#txtNguoiBan').val(),
+                    noidung: "",
+                }, success: function (data) {
+                    window.location = "/Chat/Chat";
+                }
+            })
+        } else {
+            $("#popup_login").show();
+        }
+    });
+</script>
+@section Jsfooter{
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                type: 'get',
+                url: '/Home/getTinLienQuan',
+                data: {
+                    madanhmuc: $('#txtMaDanhMuc').val(),
+                    mabaidang: $('.w3-content').attr('id')
+                },
+                success: function (data) {
+                    $('#frmSanPham').empty();
+
+                    $.each(data.listTin, function (k, v) {
+                        var t = `<div class="col-lg-2 col-sm-5 pn-product" style="padding:0px; padding:1rem" name="frmSP" id="` + v.MaBaiDang + `">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            <img src="`+ v.HinhAnh + `" />
+                            <div class="icon">
+                                <i class="icon_heart_alt" style="color:red"></i>
+                            </div>
+                        </div>
+                        <div class="pi-text">
+                            <a href="#">
+                                <h5>`+ v.TieuDe + `</h5>
+                            </a>
+                            <div class="product-price">
+                                `+ v.Gia + ` đ
+                            </div>
+
+                        </div>
+                    </div>
+                </div>`;
+                        $('#frmSanPham').append(t);
+                    });
+                }
+            })
+        });
+        $(document).on('click', "div[name = 'frmSP']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+            
+        });
+    </script>
+}

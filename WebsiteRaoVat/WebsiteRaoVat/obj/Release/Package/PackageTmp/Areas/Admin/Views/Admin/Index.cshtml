@@ -1,0 +1,64 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Areas/Admin/Views/Admin/layoutAdmin.cshtml";
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="Index">Trang chủ</a></li>
+    </ol>
+</nav>
+
+<div class="statistics">
+    <div class="row">
+        <div class="col-xl-6 pr-xl-2">
+            <div class="row">
+                <div class="col-sm-6 pr-sm-2 statistics-grid">
+                    <div class="card card_border border-primary-top p-4">
+                        <i class="lnr lnr-users"> </i>
+                        <h3 class="text-primary number">@ViewBag.tongsl</h3>
+                        <p class="stat-text">Số lượng người tham gia</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 pl-sm-2 statistics-grid">
+                    <div class="card card_border border-primary-top p-4">
+                        <i class="lnr lnr-eye"> </i>
+                        <h3 class="text-secondary number">@ViewBag.Soluongtruycap</h3>
+                        <p class="stat-text">Số lượng người truy cập</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-6 pl-xl-2">
+            <div class="row">
+                <div class="col-sm-6 pr-sm-2 statistics-grid">
+                    <div class="card card_border border-primary-top p-4">
+                        <i class="lnr lnr-cloud-download"> </i>
+                        <h3 class="text-success number">@ViewBag.tongbaiviet</h3>
+                        <p class="stat-text">Số lượng bài viết</p>
+                    </div>
+                </div>
+                <div class="col-sm-6 pl-sm-2 statistics-grid">
+                    <div class="card card_border border-primary-top p-4">
+                        <i class="lnr lnr-cart"> </i>
+                        <h3 class="text-danger number">@ViewBag.tongqcao</h3>
+                        <p class="stat-text">Lượt mua quảng cáo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="chart">
+        <div class="row">
+
+            <div class="col-lg-6 pl-lg-2 chart-grid">
+                <div class="card text-center card_border">
+
+                    <div id="curve_chart" style="width: 1180px; height: 500px"></div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

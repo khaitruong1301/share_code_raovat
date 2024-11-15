@@ -1,0 +1,291 @@
+﻿
+@{
+    ViewBag.Title = "QuanLyTin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3" style="margin-top:11%">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px; padding:1rem 3rem">
+
+            <div class="col-2" style="object-fit:cover; padding:0.5rem ">
+                <img src="@ViewBag.Hinh" style="border-radius: 50%; height:150px; width:150px" />
+            </div>
+            <div class="col-6" style="margin-top:2rem">
+                <h4 style="font-weight:700; margin-bottom:0.5rem">
+                    @ViewBag.TenNguoiDung
+                </h4>
+                <a href="#" style="color: cornflowerblue;font-size:18px">
+                    Xem trang cá nhân của bạn
+                </a>
+            </div>
+        </div>
+        <div class="row" style="background-color:#fff;margin:1px;">
+            <div class="col-3 text-center" style="padding:1rem;" >
+                <button id="0" style="color:#252525;background-color:#fff; border:none" name="btnOption">
+                    ĐANG HIỂN THỊ
+                </button>
+            </div>
+            <div class="col-3 text-center" style="padding:1rem;">
+                <button id="1" style="color:#252525;background-color:#fff; border:none" name="btnOption">
+                    BỊ TỪ CHỐI
+                </button>
+            </div>
+            <div class="col-3 text-center" style="padding:1rem;">
+                <button id="2" style="color:#252525;background-color:#fff; border:none" name="btnOption">
+                    ĐANG ĐỢI DUYỆT
+                </button>
+            </div>
+            <div class="col-3 text-center" style="padding:1rem;">
+                <button id="3" style="color:#252525;background-color:#fff; border:none" name="btnOption">
+                    ĐÃ ẨN
+                </button>
+            </div>
+        </div>
+    </div>
+
+</section>
+<section class="py-0" >
+    <div class="container" id="frmDaiDang">
+        @*<div class="row pn-product" style="background-color:#fff; margin:1px; padding:1rem;" >
+            <div class="col-2"  style="object-fit:cover; padding:0.5rem; ">
+                <img src="~/Images/anvat.jpg" />
+            </div>
+            <div class="col-6" style="padding:0.5rem;">
+                <h4 style="margin-bottom:5px">Đồ ăn Hàn Quốc</h4>
+                <h4 style="color:red; font-weight:700">2000000</h4>
+                <button style="bottom:0px; ">Quảng cáo</button>
+            </div>
+            <div class="col-4" style="padding:0.5rem; float:right">
+                <div class="icon" style="float:right;">
+                    <i class="icon_heart_alt" style="font-size:25px" ></i>
+                </div>
+            </div>
+        </div>*@
+        
+    </div>
+
+</section>
+
+<div class="modal" tabindex="-1" role="dialog" id="modalQuangCao">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QUẢNG CÁO BÀI ĐĂNG</h5>
+                @*<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>*@
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-3">
+                        <button class="btn btn-info" style="margin-bottom:5px" id="1000" name="btnTien">
+                            1 ngày
+                        </button>
+                        1.000 đ
+                        <button class="btn btn-info" style="margin-bottom:5px" id="3000" name="btnTien">
+                            3 ngày
+                        </button>
+                        3.000 đ
+                        <button class="btn btn-info" style="margin-bottom:5px" id="5000" name="btnTien">
+                            5 ngày
+                        </button>
+                        5.000 đ
+                    </div>
+                    <div class="col-8">
+                        Bạn muốn bài bán được hiện ngay trang chủ và tăng số lượng người tiếp cận hơn? Vui lòng chọn ngay số lượng ngày cần hiển thị theo nhu cầu của bạn.
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnXacNhan">Xác nhận</button>
+                <button type="button" class="btn btn-danger" id="btnClose" data-dismiss="modal">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="modalDuyet">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">XÁC NHẬN</h5>
+                <button type="button" class="close" onclick="modalClose()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="frmMess">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnDongY">Đồng ý</button>
+                <button type="button" class="btn btn-secondary" onclick="modalClose()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    var ma;
+    $(document).ready(function () {
+        $.ajax({
+            type: 'get',
+            url: '/Home/getBaiDang',
+            data: {
+                TrangThai: 0
+            },
+            success: function (data) {
+                $('#frmDaiDang').empty();
+                $.each(data.lstBaiDang, function (k, v) {
+                    var content = `<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem 1rem ;" >
+            <div class="col-2"  style="object-fit:cover; padding:0.5rem; ">
+                <img src="`+ v.HinhAnh + `" style="height:150px" />
+            </div>
+            <div class="col-6" style="padding:0.5rem;">
+                <h4 style="margin-bottom:5px">`+ v.TieuDe + `</h4>
+                <h4 style="color:red; font-weight:700">`+ v.Gia + `đ</h4>`
+                    if (v.NgayHetHan == "") {
+                        content += `<button style="bottom:0px;" class="btn btn-success" name="btnQuangCao" id="` + v.MaBaiDang + `">Quảng cáo</button>`;
+                        content += `<button style="bottom:0px;" class="btn btn-secondary" name="btnHide" id="` + v.MaBaiDang + `">Ẩn tin</button>`;
+                    }
+                    else {
+                        content += `<button style="bottom:0px;" class="btn btn-info">Đang quảng cáo</button>`;
+                        content += `<button style="bottom:0px;" class="btn btn-secondary" name="btnHide" id="` + v.MaBaiDang + `">Ẩn tin</button>
+                                        <p>Ngày hết hạn: `+ v.NgayHetHan + `</p>`;
+                    }
+                    content+=`
+            </div>
+            
+        </div>`;
+                    $('#frmDaiDang').append(content);
+                });
+            }
+        })
+    });
+    var lstquangcao = [];
+    $(document).on('click', "button[name = 'btnOption']", function () {
+        //alert($(this).attr('id'));
+        $.ajax({
+            type: 'get',
+            url: '/Home/getBaiDang',
+            data: {
+                TrangThai: $(this).attr('id')
+            },
+            success: function (data) {
+                console.log(data.lstBaiDang);
+                console.log(data.lstgop);
+                lstquangcao = data.lstquangcao;
+                $('#frmDaiDang').empty();
+                $.each(data.lstBaiDang, function (k, v) {
+                    var content = `<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem 1rem ;" >
+            <div class="col-2"  style="object-fit:cover; padding:0.5rem; ">
+                <img src="`+ v.HinhAnh + `" style="height:150px"/>
+            </div>
+            <div class="col-6" style="padding:0.5rem;">
+                <h4 styssle="margin-bottom:5px">`+ v.TieuDe + `</h4>
+                <h4 style="color:red; font-weight:700">`+ v.Gia + `đ</h4>`;
+                    if (v.TrangThai == 0) {
+                        if (v.NgayHetHan == "") {
+                            content += `<button style="bottom:0px;" class="btn btn-success" name="btnQuangCao" id="` + v.MaBaiDang + `">Quảng cáo</button>`;
+                            content += `<button style="bottom:0px;" class="btn btn-secondary" name="btnHide" id="` + v.MaBaiDang + `">Ẩn tin</button>`;
+                        }
+                        else {
+                            content += `<button style="bottom:0px;" class="btn btn-info">Đang quảng cáo</button>`;
+                            content += `<button style="bottom:0px;" class="btn btn-secondary" name="btnHide" id="` + v.MaBaiDang + `">Ẩn tin</button>
+                                        <p>Ngày hết hạn: `+ v.NgayHetHan + `</p>`;
+                        }
+                    }
+                    if (v.TrangThai == 1) {
+                        content += `<button style="bottom:0px;" class="btn btn-info" name="btnResend" id="` + v.MaBaiDang + `">Gửi lại</button>`;
+                    }
+                    if (v.TrangThai == 3) {
+                        content += `<button style="bottom:0px;" class="btn btn-secondary" name="btnHienThi" id="` + v.MaBaiDang + `">Hiển thị</button>`;
+                    }
+                content+=`
+            </div>
+            
+        </div>`;
+                    
+                    $('#frmDaiDang').append(content);
+                });
+            }
+        })
+    });
+    $(document).on('click', "button[name = 'btnQuangCao']", function () {
+        ma = $(this).attr('id');
+        //alert(ma);
+        $('#modalQuangCao').show();
+    });
+    $('#btnClose').click(function () {
+        $('#modalQuangCao').hide();
+    });
+    var giatien = 0;
+    $(document).on('click', "button[name = 'btnTien']", function () {
+        giatien = $(this).attr('id');
+        
+    });
+
+    $('#btnXacNhan').click(function () {
+        //alert(giatien +""+ma);
+        $.ajax({
+            type: 'post',
+            url: '/Home/ThanhToanMomo',
+            data: {
+                tongtien: giatien,
+                mabaidang: ma,
+            },
+            success: function (data) {
+                //alert(giatien);
+            }
+        });
+    });
+    function modalClose() {
+        $('#modalDuyet').hide();
+
+    }
+    var capnhattrangthai;
+    
+    $(document).on('click', "button[name='btnResend']", function () {
+        $('#frmMess').empty();
+        $('#frmMess').append('<p>Bạn có chắc chắn gửi lại bài đăng</p>');
+        $('#modalDuyet').show();
+        ma = $(this).attr('id');
+        capnhattrangthai = 2;
+    });
+    
+    
+    $(document).on('click', "button[name='btnHide']", function () {
+        $('#frmMess').empty();
+        $('#frmMess').append('<p>Bạn có chắc chắn ẩn bài đăng</p>');
+        $('#modalDuyet').show();
+        ma = $(this).attr('id');
+        capnhattrangthai = 3;
+    });
+    $(document).on('click', "button[name='btnHienThi']", function () {
+        $('#frmMess').empty();
+        $('#frmMess').append('<p>Bạn có chắc chắn hiển thị lại bài đăng</p>');
+        $('#modalDuyet').show();
+        ma = $(this).attr('id');
+        capnhattrangthai = 0;
+    });
+    $('#btnDongY').click(function () {
+        $.ajax({
+            type: 'post',
+            url: '/Home/UpdateTrangThai',
+            data: {
+                trangthai: capnhattrangthai,
+                mabaidang: ma,
+            },
+            success: function (data) {
+                if (data.code == 200) {
+                    alert("Thao tác thành công!");
+                    location.reload();
+                    //$('#modalDuyet').hide();
+
+                }
+            }
+
+        });
+
+    });
+</script>

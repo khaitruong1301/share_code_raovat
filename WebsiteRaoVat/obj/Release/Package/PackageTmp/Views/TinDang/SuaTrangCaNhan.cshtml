@@ -1,0 +1,188 @@
+﻿@model WebsiteRaoVat.Models.TaiKhoan
+
+@{
+    ViewBag.Title = "SuaTrangCaNhan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3" style="margin-top:11%">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px;padding:3rem">
+            <input hidden id="txtUsername" value="@Model.Username" />
+            <div class="col-2" style="height:150px">
+                @if (Model.Hinh != null)
+                {
+                    <img src="@Model.Hinh" style="object-fit:cover; height:150px; width:150px" />
+                }
+                else
+                {
+                    <img src="~/Images/img_avatar.png" style="object-fit: cover; height: 150px; width: 150px" />
+                }
+
+                <div class="_13mC4" style="right: 0px; top: 0px;">
+                    <div class="_1WwT3" data-test="image-file">
+                        <label class="_3g5Wc">
+                            <input accept="image/*" class="jMzvB" onchange="" id="txtimg" name="image" type="file">
+                            <img class="_26Evc" src="//d35aaqx5ub95lt.cloudfront.net/images/profile/00e52dc386f5aeaef537e239c70739ab.svg">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-8">
+                <div class="login-form" style="background-color:#fff; padding:0rem 2rem">
+                    <form>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" style="margin-top:10px">Họ và tên</label>
+                            </div>
+                            <div class="col-9">
+                                <div class="group-input">
+                                    <input type="text" required="" id="ten" value="@Model.TenNguoiDung">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" style="margin-top:10px">Email:</label>
+                            </div>
+                            <div class="col-9">
+                                <div class="group-input">
+                                    <input type="email" required="" id="email" value="@Model.Email" placeholder="Chưa cung cấp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" style="margin-top:10px">Số điện thoại:</label>
+                            </div>
+                            <div class="col-9">
+                                <div class="group-input">
+                                    <input type="number" required="" id="sdt" value="@Model.SDT" placeholder="Chưa cung cấp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" style="margin-top:10px">Địa chỉ:</label>
+                            </div>
+                            <div class="col-9">
+                                <div class="group-input">
+                                    <input type="text" required="" id="diachi" value="@Model.DiaChi" placeholder="Chưa cung cấp">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-3">
+                                <label for="username" style="margin-top:10px">Mật khẩu:</label>
+                            </div>
+                            <div class="col-9">
+                                <div class="group-input">
+                                    <input type="password" required="" id="pass" value="123456789">
+                                </div>
+                                @*<img src="~/Images/pencil_50px.png" width="30" height="30" style="cursor:pointer" id="doiMK" />*@
+                            </div>
+                            
+                        </div>
+
+                        <div class="group-input gi-check" id="ThongBao">
+
+                        </div>
+
+                        <button class="site-btn login-btn" id="btnLuu" style="width:20%; margin-left:40%">Lưu</button>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<style>
+    ._13mC4 {
+        background-color: #e7ab3c;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 5px;
+        position: absolute;
+    }
+
+    ._1WwT3 {
+        display: inline-block;
+    }
+
+    ._3g5Wc {
+        position: relative;
+    }
+
+    input[type="file" i] {
+        background-color: initial;
+        cursor: default;
+        align-items: baseline;
+        color: inherit;
+        text-overflow: ellipsis;
+        white-space: pre;
+        text-align: start !important;
+        padding: initial;
+        border: initial;
+        overflow: hidden !important;
+    }
+
+    .jMzvB {
+        height: 0;
+        overflow: hidden;
+        position: absolute;
+        width: 0;
+    }
+</style>
+@section Jsfooter{
+    <script>
+        $('#btnLuu').click(function () {
+            //alert($('#txtUsername').val() + " " + $('#ten').val() + " " + $('#sdt').val() + " " + $('#diachi').val());
+            $.ajax({
+                type: 'post',
+                url: '/TinDang/SuaThongTin',
+                data: {
+                    username: $('#txtUsername').val(),
+                    tennguoidung: $('#ten').val(),
+                    sdt: $('#sdt').val(),
+                    diachi: $('#diachi').val(),
+                    email: $('#email').val()
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        alert("Cập nhật thông tin thành công!");
+                        location.reload();
+                    }
+                }
+            })
+        });
+        $('#txtimg').change(function () {
+
+            if ($('#txtimg').val().length > 0) {
+                if (window.FormData !== undefined) {
+                    var fileupload = $('#txtimg').get(0);
+                    var file = fileupload.files;
+                    var formdata = new FormData();
+                    formdata.append('file', file[0]);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/XuLyFileHinh',
+                        contentType: false, //Khong co hear
+                        processData: false,//Khong Xu Ly Du Lieu
+                        data: formdata,
+                        success: function (ImageData) {
+                            //$('#imgavata').attr('src', ImageData);
+                            //$('#txtimg').val("");
+                            location.reload();
+                        }
+                    });
+                }
+            } else {
+                alert("Vui lòng chọn file");
+            }
+        });
+    </script>
+}

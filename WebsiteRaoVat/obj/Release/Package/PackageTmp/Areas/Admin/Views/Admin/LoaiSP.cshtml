@@ -1,0 +1,149 @@
+﻿@using WebsiteRaoVat.Models
+@model IEnumerable<LoaiSanPham>
+@{
+    ViewBag.Title = "LoaiSP";
+    Layout = "~/Areas/Admin/Views/Admin/layoutAdmin.cshtml";
+    WebGrid webGrid = new WebGrid(source: Model, rowsPerPage: 5);
+}
+@{
+    int iDem = 0;
+    int iSLDanhMucTrenTrang = 5;
+    int iTrang = 1;
+}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb my-breadcrumb">
+        <li class="breadcrumb-item">Admin</li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="#">Loại sản phẩm</a></li>
+    </ol>
+</nav>
+<div class="row" style="margin:1rem; background-color:#fff">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Loại sản phẩm</th>
+                <th scope="col">Danh mục</th>
+                <th scope="col">Hình ảnh</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                if (iDem % iSLDanhMucTrenTrang == 0 && iDem != 0)
+                {
+                    iTrang++;
+                }
+                <tr id="@item.MaLoaiSP" class="@Url.Content("SoTrangChua SoTrang" + iTrang.ToString())">
+                    <td>@item.TenLoaiSP</td>
+                    <td>@item.DanhMuc.TenDanhMuc</td>
+                    <td><img src="@item.Hinh" width="70" height="70" alt="" /></td>
+                    <td>
+                        <a class="btn btn-xs btn-success text-white" href="/Admin/Admin/SuaLoaiSP/@item.MaLoaiSP">Sửa</a>
+                        <button class="btn btn-xs btn-danger text-white" name="btnTuchoi">Xóa</button>
+                    </td>
+                </tr>
+                iDem++;
+            }
+        </tbody>
+    </table>
+</div>
+<div class="row" style="margin:1rem;">
+    @for (int i = 1; i <= iTrang; i++)
+    {
+        <a class="linkTrang" data-sotrang="@Url.Content("SoTrang" + i)" href="#">@i</a>
+    }
+</div>
+<div class="modal" id="modalDuyet">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Xác nhận</h5>
+                <button type="button" class="close" onclick="modalClose()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body" id="btnMess">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnDongY">Đồng ý</button>
+                <button type="button" class="btn btn-secondary" onclick="modalClose()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .SoTrangChua {
+        display: none;
+    }
+
+    .linkTrang {
+        padding: 0.5rem 1rem;
+        border: 1px solid #dee2e6;
+        border-radius: 5px;
+        margin-right: 5px;
+        background-color: #fff;
+        color: black;
+    }
+
+    .SoTrang1 {
+        display: table-row;
+    }
+
+    a:hover {
+        text-decoration: none;
+        background-color: #E7EDF6;
+    }
+
+    a:focus {
+        background-color: #4755AB;
+        color: #fff
+    }
+</style>
+@section Jsfooter{
+    <script>
+        var trangthai = 2;
+        var ma;
+        $(document).on('click', "button[name='btnDuyet']", function () {
+            $('#btnMess').empty();
+            $('#btnMess').append('<p>Bạn chắc chắn duyệt bài viết</p>');
+            $('#modalDuyet').show();
+            trangthai = 0;
+            ma = $(this).closest('tr').attr('id');
+
+        });
+
+        function modalClose() {
+            $('#modalDuyet').hide();
+
+        }
+        $(document).on('click', "button[name='btnTuchoi']", function () {
+            $('#btnMess').empty();
+            $('#btnMess').append('<p>Bạn chắc chắn xóa loại sản phẩm</p>');
+            $('#modalDuyet').show();
+            trangthai = 1;
+            ma = $(this).closest('tr').attr('id');
+        });
+        $('#btnDongY').click(function () {
+            $.ajax({
+                type: 'post',
+                url: '/Admin/Admin/DeleteLoaiSP',
+                data: {
+
+                    maloaiSP: ma,
+                },
+                success: function (data) {
+                    if (data.code == 200) {
+                        location.reload();
+                    }
+                }
+
+            });
+        });
+        $('.linkTrang').click(function () {
+            $('.SoTrangChua').hide();
+            var SoTrang = $(this).attr("data-sotrang");
+            $('.' + SoTrang).show();
+        });
+    </script>
+}

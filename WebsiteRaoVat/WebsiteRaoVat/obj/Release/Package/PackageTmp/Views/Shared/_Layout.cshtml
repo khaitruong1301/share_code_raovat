@@ -1,0 +1,124 @@
+﻿<html lang="zxx">
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Fashi Template">
+    <meta name="keywords" content="Fashi, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Fashi</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css?family=Muli:300,400,500,600,700,800,900&amp;display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/themify-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/elegant-icons.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/owl.carousel.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/nice-select.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/jquery-ui.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/slicknav.min.css" type="text/css">
+    <link rel="stylesheet" href="~/Content/css/style.css" type="text/css">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder" style="display: none;">
+        <div class="loader" style="display: none;"></div>
+    </div>
+
+    <!-- Header Section Begin -->
+    <header class="header-section" id="headerbar" style="border-bottom:solid 1px;border-bottom-color:rgb(229,229,229);background-color:#fff">
+        <div class="header-top">
+            <div class="container">
+                <div class="ht-left">
+                    <div class="mail-service">
+                        <a href="/Home/Index">
+                            <img src="~/Content/img/logo.png">
+                        </a>
+                    </div>
+                    <div class="phone-service">
+                        <i class=" fa fa-envelope"></i>
+                        websiteraovat@gmail.com
+                    </div>
+                </div>
+                <div class="ht-right">
+                    <div class="lan-selector" id="clickaa">
+                        <div class="dd ddcommon borderRadius" tabindex="0" style="width: 300px;">
+                            <a class="ddTitle" href="#" style="color: #252525;">
+                                <span class="divider"></span>
+                                <span class="ddlabel">Thêm</span>
+                            </a>
+
+                            <div class="dropdown-content">
+                                <ul style="list-style-type: none;">
+                                    @if (Session["TaiKhoan"] != null)
+                                    {
+                                        WebsiteRaoVat.Models.TaiKhoan taikhoan = (WebsiteRaoVat.Models.TaiKhoan)Session["TaiKhoan"];
+                                        <li><a href="/TinDang/TrangCaNhan/@taikhoan.Username">Trang cá nhân</a></li>
+                                    }
+
+
+                                    <li><a href="/TinDang/CreateYeuThich">Tin yêu thích</a></li>
+                                    <li><a href="/Login/DangXuat">Đăng xuất</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="lan-selector">
+                        <div class="dd ddcommon borderRadius" tabindex="0" style="width: 300px;">
+                            <a class="ddTitle" style="color:#252525" id="btnChat">
+                                <span class="divider"></span>
+                                <span class="ddlabel">Chat</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lan-selector">
+                        <div class="dd ddcommon borderRadius" tabindex="0" style="width: 300px;">
+                            <a id="btnQuanLyTin" class="ddTitle" style="color:#252525">
+                                <span class="divider"></span>
+                                <span class="ddlabel">Quản lý tin</span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="lan-selector">
+                        <div class="dd ddcommon borderRadius" tabindex="0" style="width: 300px;">
+                            <a class="ddTitle" style="color:#252525" href="/Home/Index">
+                                <span class="divider"></span>
+                                <span class="ddlabel">Trang chủ</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.Action("Menu", "Home")
+    </header>
+    <!-- Header End -->
+    @RenderBody()
+
+    @Html.Action("login", "Login")
+    @Html.Action("Register", "Login")
+    <!-- Js Plugins -->
+    <script src="~/Content/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/jquery-ui.min.js"></script>
+    <script src="~/Content/js/jquery.countdown.min.js"></script>
+    <script src="~/Content/js/jquery.nice-select.min.js"></script>
+    <script src="~/Content/js/jquery.zoom.min.js"></script>
+    <script src="~/Content/js/jquery.dd.min.js"></script>
+    <script src="~/Content/js/jquery.slicknav.js"></script>
+    <script src="~/Content/js/owl.carousel.min.js"></script>
+    <script src="~/Content/js/main.js"></script>
+    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    @*<script src="~/Scripts/jquery.signalR-2.4.2.min.js"></script>*@
+    @*<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.css" />*@
+    @RenderSection("Jsfooter", required: false)
+
+
+</body>
+</html>

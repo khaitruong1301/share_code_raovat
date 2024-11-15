@@ -1,0 +1,225 @@
+﻿@model List<WebsiteRaoVat.Models.DanhMuc>
+@{
+    ViewBag.Title = "Trang chủ";
+}
+<style>
+    .slick-slide {
+        height: auto
+    }
+
+    .slick-next {
+        position: absolute;
+        top: 150px;
+        right: 0;
+        border: none;
+    }
+
+    .slick-prev {
+        left: 1px;
+        position: absolute;
+        top: 150px;
+        z-index: 10;
+        border: none;
+    }
+</style>
+<section class="py-3" style="margin-top:10%">
+    <div class="container">
+        <div class="your-class">
+
+
+            <!-- Wrapper for slides -->
+            
+            <div><img src="~/Images/284270153_879847500075222_7653644548235844984_n.png" width="100%" height="351" /></div>
+            <div><img src="~/Images/banner2.jpg" width="100%" height="351" /></div>
+            <div><img src="~/Images/Banner 1.jpg" width="100%" height="351" /></div>
+            <div><img src="~/Images/285368150_436715061287681_8782435056857854954_n.png" width="100%" height="351" /></div>
+            <div><img src="~/Images/thiet-ke-web-rao-vat-quang-cao.jpg" width="100%" height="351" /></div>
+            <div><img src="~/Images/cac-loai-banner-duoc-su-dung-hien-nay.jpg" width="100%" height="351" /></div>
+
+
+
+        </div>
+    </div>
+</section>
+<section class="py-0">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px">
+            <div class="row" style="margin:1rem 2rem">
+                <h5 style="font-weight:700">Danh mục nổi bật</h5>
+            </div>
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    <div class="col-1 text-center" style="padding:0px; margin:1rem 2rem">
+                        <a href="/TinDang/DSTinDang/@item.MaDanhMuc">
+                            <img src="@item.Hinh" class="img-dm" height="70" width="70" />
+                            <p>@item.TenDanhMuc</p>
+                        </a>
+                    </div>
+                }
+            </div>
+
+        </div>
+    </div>
+</section>
+<section class="py-3">
+    <div class="container">
+        <div class="container" style="background-color:#fff; padding:1rem">
+            <h5 style="font-weight:700; margin:0rem 1.5rem">Tin nổi bật</h5>
+            <div class="row" style="margin:0.5rem" id="frmTin">
+
+
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" id="phanTrang">
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</section>
+<section class="py-3">
+    <div class="container">
+        <div class="container" style="background-color:#fff; padding:1rem">
+            <h5 style="font-weight:700; margin:0rem 1.5rem">Tin đăng mới</h5>
+            <div class="row" style="margin:0.5rem" id="frmSanPham">
+
+
+            </div>
+            <nav aria-label="Page navigation example">
+                <ul class="pagination" id="phanTrang">
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+</section>
+
+<script>
+
+    var Trang = 1;
+
+    $('#phanTrang').on('click', 'li', function (e) {
+        e.preventDefault();
+        Trang = $(this).text();
+        LoadDSSP(Trang);
+
+    });
+
+    $(document).ready(function () {
+        $.ajax({
+            type: 'get',
+            url: '/Home/gettinnoibat',
+            data: {
+                trang: Trang,
+            },
+            success: function (data) {
+                $('#frmTin').empty();
+                $.each(data.lstTinnoibat, function (k, v) {
+                    var t = `<div class="col-lg-2 col-sm-5 pn-product" style="padding:0px; padding:1rem" name="frmSP" id="` + v.MaBaiDang + `">
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <img src="`+ v.HinhAnh + `" />
+                        <div class="icon">
+                            <i class="icon_heart_alt" style="color:red"></i>
+                        </div>
+                    </div>
+                    <div class="pi-text">
+                        <a href="#">
+                            <h5>`+ v.TieuDe + `</h5>
+                        </a>
+                        <div class="product-price">
+                            `+ v.Gia + ` đ
+                        </div>
+ 
+                    </div>
+
+                </div>
+            </div>`;
+                    $('#frmTin').append(t);
+                });
+                if (data.trangSP > 1) {
+                    for (i = 1; i <= data.trangSP; i++) {
+                        let li = '<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>';
+                        $('#phanTrang').append(li);
+                    }
+
+                }
+            }
+        });
+        $(document).on('click', "div[name = 'frmTin']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+
+        });
+    });
+
+
+
+
+
+
+
+    //getDanhSachSP
+    $(document).ready(function () {
+        $.ajax({
+            type: 'get',
+            url: '/Home/getDanhSachSP',
+            data: {
+                trang: Trang,
+            },
+            success: function (data) {
+                $('#frmSanPham').empty();
+                $.each(data.lstBaiDang, function (k, v) {
+                    var t = `<div class="col-lg-2 col-sm-5 pn-product" style="padding:0px; padding:1rem" name="frmSP" id="` + v.MaBaiDang + `">
+                <div class="product-item">
+                    <div class="pi-pic">
+                        <img src="`+ v.HinhAnh + `" />
+                        <div class="icon">
+                            <i class="icon_heart_alt" style="color:red"></i>
+                        </div>
+                    </div>
+                    <div class="pi-text">
+                        <a href="#">
+                            <h5>`+ v.TieuDe + `</h5>
+                        </a>
+                        <div class="product-price">
+                            `+ v.Gia + ` đ
+                        </div>
+ <div class="product-price">
+                            `+ v.NgayDang+ ` đ
+                        </div>
+                    </div>
+
+                </div>
+            </div>`;
+                    $('#frmSanPham').append(t);
+                });
+                if (data.trangSP > 1) {
+                    for (i = 1; i <= data.trangSP; i++) {
+                        let li = '<li class="page-item"><a class="page-link" href="#">' + i + '</a></li>';
+                        $('#phanTrang').append(li);
+                    }
+
+                }
+            }
+        });
+        $(document).on('click', "div[name = 'frmSP']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+
+        });
+    });
+
+    $(document).ready(function () {
+        $('.your-class').slick({
+
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            autoplaySpeed: 200,
+            prevArrow: "<button type='button' class='slick-prev pull-left'><i class='fa fa-angle-left' aria-hidden='true'></i></button>",
+            nextArrow: "<button type='button' class='slick-next pull-right'><i class='fa fa-angle-right' aria-hidden='true'></i></button>",
+
+        });
+    })
+</script>

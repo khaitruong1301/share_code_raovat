@@ -1,0 +1,78 @@
+﻿<div id="popup_register">
+    <div class="row" style="margin-left:10rem;">
+        <div class="offset-lg-3" style="padding-top:5rem;width:500px">
+            <button id="btnClosed" class="btn btn-default" style="float:right">
+                <img src="~/Content/img/delete_50px.png" height="30" width="30" />
+            </button>
+            <div class="login-form" style="background-color:#fff; padding:2rem">
+                <h3 class="text-center" style="margin-bottom:15px">Đăng ký</h3>
+                <form action="#">
+                    <div class="group-input">
+                        <input type="text" required="" value="" id="username1" placeholder="Tên đăng nhập">
+                    </div>
+                    <div class="group-input">
+                        <input type="text" required="" value="" id="hoten" placeholder="Họ và tên">
+                    </div>
+                    <div class="group-input">
+                        <input type="password" required="" value="" id="pass1" placeholder="Mật khẩu">
+                    </div>
+                    <div class="group-input">
+                        <input type="password" required="" value="" id="confirm" placeholder="Xác nhận mật khẩu">
+                    </div>
+                    <div class="group-input">
+                        <input type="number" required="" value="" id="sdt" placeholder="Số điện thoại">
+                    </div>
+                    <div class="group-input gi-check" id="ThongBao1">
+
+                    </div>
+                    <button id="btnSubmit1" class="site-btn login-btn">Register</button>
+
+                </form>
+                <div class="switch-login">
+                    <a id="frmDangNhap" style="cursor:pointer" class="or-login">Or Login</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $('#btnClosed').click(function () {
+        $('#popup_register').hide();
+    })
+    $('#frmDangNhap').click(function () {
+        $('#popup_register').hide();
+        $("#popup_login").show();
+    })
+    $('#btnSubmit1').click(function () {
+        //alert($('#pass').val());
+        if ($('#pass1').val() != "" && $('#confirm').val() != "" && $('#username1').val() != "" && $('#hoten').val() != "" && $('#sdt').val() != "") {
+            if ($('#pass1').val() != $('#confirm').val()) {
+                $('#ThongBao1').empty();
+                $('#ThongBao1').append('<p style="color: red">Mật khẩu không trùng khớp</p>');
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/Login/DangKyTK',
+                    data: {
+                        username: $('#username1').val(),
+                        password: $('#pass1').val(),
+                        hoten: $('#hoten').val(),
+                        sdt: $('#sdt').val(),
+                    },
+                    success: function (data) {
+                        if (data.thanhcong == 0) {
+                            $('#ThongBao1').empty();
+                            $('#ThongBao1').append('<p style="color: red">Tên đăng nhập đã tồn tại!</p>');
+                        } else {
+                            alert("Tạo tài khoản thành công");
+                            $('#popup_register').hide();
+                            $("#popup_login").show();
+                        }
+                    }
+
+                })
+            }
+        } 
+        
+    })
+</script>

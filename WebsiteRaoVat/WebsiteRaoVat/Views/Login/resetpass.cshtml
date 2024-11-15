@@ -1,0 +1,82 @@
+﻿<style>
+
+
+</style>
+<div id="popup_resetpass">
+    <div class="row" style="margin-left:10rem;">
+        <div class="offset-lg-3" style="padding-top:5rem;width:500px">
+            <button id="btnClose4" class="btn btn-default" style="float:right">
+                <img src="~/Content/img/delete_50px.png" height="30" width="30" />
+            </button>
+            <div class="login-form" style="background-color:#fff; padding:2rem">
+                <h3 class="text-center" style="margin-bottom:15px">Thay đổi mật khẩu</h3>
+                <div>
+                    <div class="group-input" style="margin-bottom:15px">
+                       
+                        <input type="text" required="" id="maxn" class="form-control" placeholder="Mã code ">
+                    </div>
+                    <div class="group-input" style="margin-bottom:15px">
+                       
+                        <input type="password"  required="" id="password" class="form-control" placeholder="Nhập mật khẩu ">
+                    </div>
+                    <div class="group-input" style="margin-bottom:15px">
+                    
+                        <input type="password" required="" id="passwordconfirm" class="form-control" placeholder="Xác nhận mât khẩu">
+                    </div>
+                    <div class="group-input gi-check" id="ThongBao">
+
+                    </div>
+
+                    <button id="btnsubmitreset" class="site-btn login-btn"> Gửi</button>
+
+
+                <div>
+
+
+                <div class="switch-login">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        </div>
+    </div>
+<script>
+
+    $("#btnClose4").click(function () {
+        $("#popup_resetpass").hide();
+    });
+    $("#btnsubmitreset").click(function () {
+
+        if ($('#password').val() != "" && $('#passwordconfirm').val() != "" && $('#maxn').val() != "") {
+            if ($('#password').val() != $('#passwordconfirm').val()) {
+                $('#ThongBao1').empty();
+                $('#ThongBao1').append('<p style="color: red">Mật khẩu không trùng khớp</p>');
+            } else {
+                $.ajax({
+                    type: 'post',
+                    url: '/Login/createpass',
+                    data: {
+
+                        maxn: $('#maxn').val(),
+                        pass: $('#password').val(),
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            alert("Thay đổi mật khẩu thành công");
+                            $("#popup_login").show();
+                            $("#popup_resetpass").hide();
+
+                        }
+
+                    }
+
+                })
+            }
+
+
+        }
+    });
+
+
+</script>

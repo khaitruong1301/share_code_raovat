@@ -1,0 +1,221 @@
+﻿@model List<WebsiteRaoVat.Models.DanhMuc>
+@{
+    ViewBag.Title = "Đăng tin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3" style="margin-top:10%">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px; padding:2rem">
+            <form class="checkout-form">
+                <div class="row">
+                    <div class="col-lg-8" style="left:18%">
+                        <h4 class="text-center">Sản phẩm muốn bán</h4>
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <input type="text" id="TieuDe" required="" placeholder="Tiêu đề ">
+                            </div>
+                            <div class="col-lg-6">
+                                <select id="MaDanhMuc" class="dropdownlst">
+                                    <option value="0">Danh mục</option>
+                                    @foreach (var item in Model)
+                                    {
+                                        <option value="@item.MaDanhMuc">@item.TenDanhMuc</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-lg-6">
+                                <select id="LoaiSP" class="dropdownlst">
+                                    <option value="0">Loại sản phẩm</option>
+                                </select>
+                            </div>
+                            
+                            <div class="col-lg-6">
+                                <input type="number" id="Gia" required="" placeholder="Giá tiền muốn bán">
+                            </div>
+                            <div class="col-lg-6">
+                                <select id="TinhTrang" class="dropdownlst">
+                                    <option value="true">Mới</option>
+                                    <option value="false">Đã sử dụng</option>
+                                </select>
+                            </div>
+                            <div class="col-lg-12">
+
+                                <input accept="image/*" onchange="" id="txtimg" name="image" type="file">
+                            </div>
+                            <div class="col-lg-12 ">
+                                <div style="border: 2px dashed #ebebeb;border-radius: 5px; padding-left: 20px; padding-top: 10px; margin-bottom: 25px;">
+                                    <div class="row" id="imgPro">
+                                        @*<div class="col-3" style="object-fit:cover;">
+
+                                            <img src="~/Images/1-1_1523988105.jpg" />
+                                            <div class="_13mC4" name="btnBo" style="right: 13.8604px; top: 0px;">                                                
+                                                    X                                               
+                                            </div>
+                                        </div>*@
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12">
+                                <textarea id="MoTa" placeholder="Mô tả"></textarea>
+                            </div>
+                            <div class="col-lg-12 text-center">
+                                <button class="primary-btn" style="border:none" onclick="AddBaiDang()">HOÀN THÀNH</button>
+                            </div>
+                        </div>
+                    </div>                  
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+<style>
+    ._13mC4 {
+        background-color: #fff;
+        border: 2px solid #ebebeb;
+        cursor: pointer;
+        padding: 0px 5px;
+        position: absolute;
+        border-radius:5px;
+    }
+    input {
+        box-shadow: none;
+    }
+
+        input[type="file" i] {
+            background-color: initial;
+            cursor: default;
+            align-items: baseline;
+            color: inherit;
+            text-overflow: ellipsis;
+            white-space: pre;
+            text-align: start !important;
+            padding: initial;
+            border: initial;
+            overflow: hidden !important;
+        }
+    .imgpr {
+        min-width: 100%;
+        object-fit: cover;
+        height: 150px;
+        width: 150px;
+    }
+</style>
+@section Jsfooter{
+    <script>
+        var img = ["NULL","NULL","NULL","NULL","NULL"];
+        //var img = [];
+        var i = 0;
+        var dem = 0;
+        $(document).ready(function () {
+            $("#MaDanhMuc").change(function () {
+                $.ajax({
+                    type: 'get',
+                    url: '/Home/getLoaiSP',
+                    data: {
+                        MaDanhMuc: $("#MaDanhMuc").val(),
+                    },
+                    success: function (data) {
+                        if (data.code == 200) {
+                            $("#LoaiSP").empty();
+                            $.each(data.lstLoaiSP, function (k, v) {
+                                $("#LoaiSP").append(`<option value="` + v.MaLoaiSP + `">` + v.TenLoaiSP + `</option>`);
+                            });
+                        }
+                    }
+                });
+            });
+
+            $('#txtimg').change(function () {
+                if (dem < 5) {
+                    if ($('#txtimg').val().length > 0) {
+                        if (window.FormData !== undefined) {
+                            var fileupload = $('#txtimg').get(0);
+                            var file = fileupload.files;
+                            var formdata = new FormData();
+                            formdata.append('file', file[0]);
+                            $.ajax({
+                                type: 'POST',
+                                url: '/Home/XuLyFile ',
+                                contentType: false, //Khong co hear
+                                processData: false,//Khong Xu Ly Du Lieu
+                                data: formdata,
+                                success: function (ImageData) {
+                                    $('#imgPro').append(`<div class="col-3" id="` + i +`" >
+                                        <img class="imgpr" src="` + ImageData + `"/>
+                                        <div class="_13mC4" name="`+i+`" style="right: 13.8604px; top: 0px;">
+                                                    X
+                                            </div></div>`);
+                                        img[i] = ImageData;
+                                        
+                                        //img.push(ImageData);
+                                    i++;
+                                    dem++;
+                                    //console.log(img);
+                                }
+                            });
+                        }
+                    } else {
+                        alert("Vui lòng chọn file");
+                    }
+                } else {
+                    alert("Bạn chỉ được đăng tối đa 5 hình!");
+                }
+                
+            });
+        });
+        $(document).on('click', '._13mC4', function () {
+            $('#' + $(this).attr("name")).remove();
+            img[$(this).attr("name")] = "NULL";
+            dem--;
+            img.push("NULL");
+            //console.log(img);
+            //img[$(this).attr("name")] = "NULL";
+            //alert(img[$(this).attr("name")])
+            //i = i - 1;
+            
+        });
+        var hinh = [];
+        var hinh1 = ["NULL", "NULL", "NULL", "NULL", "NULL"];
+        function XuLiFileHinh() {
+            for (var j = 0; j < img.length; j++) {
+                if (img[j] != "NULL") {
+                    hinh.push(img[j]);
+                }
+            }
+            for (var k = 0; k < hinh.length; k++) {
+                hinh1[k] = hinh[k];
+            }
+        }
+        function AddBaiDang() {
+            //alert(img[0] + "" + img[1]);
+            XuLiFileHinh();
+            console.log(hinh1);
+            console.log(dem);
+            if (dem <= 0) {
+                alert("Bạn phải đăng ít nhất một hình");
+            } else {
+                $.ajax({
+                    url: '/Home/AddBaiDang',
+                    type: 'post',
+                    data: {
+                        MaLoaiSP: $("#LoaiSP").val(),
+                        TieuDe: $("#TieuDe").val(),
+                        Gia: $("#Gia").val(),
+                        TinhTrang: $("#TinhTrang").val(),
+                        MoTa: $("#MoTa").val(),
+                        Hinh: hinh1[0],
+                        Hinh1: hinh1[1],
+                        Hinh2: hinh1[2],
+                        Hinh3: hinh1[3],
+                        Hinh4: hinh1[4]
+                    },
+                    success: function (data) {
+                        alert("Đăng thành công");
+                    }
+                });
+            }
+        };
+        //(int MaLoaiSP, string TieuDe, long Gia, bool TinhTrang, string MoTa, string Hinh, string Hinh1, string Hinh2, string Hinh3, string Hinh4)
+    </script>    
+}

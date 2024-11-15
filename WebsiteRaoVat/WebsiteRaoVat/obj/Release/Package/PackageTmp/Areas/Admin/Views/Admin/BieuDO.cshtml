@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "BieuDO";
+    Layout = "~/Areas/Admin/Views/Admin/layoutAdmin.cshtml";
+}
+
+    <head>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+        <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Tháng', 'Số lượng bài viết', 'Lượt mua quảng cáo'],
+                ['1', @ViewBag.T1, @ViewBag.thang1],
+                ['2', @ViewBag.T2, @ViewBag.thang2],
+                ['3', @ViewBag.T3, @ViewBag.thang3],
+                ['4', @ViewBag.T4, @ViewBag.thang4],
+                ['5', @ViewBag.T5, @ViewBag.thang5],
+                ['6', @ViewBag.T6, @ViewBag.thang6],
+                ['7', @ViewBag.T7, @ViewBag.thang7],
+                ['8', @ViewBag.T8, @ViewBag.thang8],
+                ['9', @ViewBag.T9, @ViewBag.thang9],
+                ['10', @ViewBag.T10,@ViewBag.thang10],
+                ['11', @ViewBag.T11,@ViewBag.thang11],
+
+            ]);
+
+            var options = {
+                title: 'Thống kê số lượng bài viết của năm 2021',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+        </script>
+    </head>
+<body>
+    <div class="chart">
+        <div class="row">
+            <div class="col-lg-6 pr-lg-2 chart-grid">
+                <div class="card text-center card_border">
+                    <div class="card-header chart-grid__header">
+                        Bar Chart
+                    </div>
+                    <div class="card-body">
+                        <!-- bar chart -->
+                        <div id="container">
+                            <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                            <canvas id="barchart" width="1032" height="516" style="display: block; height: 344px; width: 688px;" class="chartjs-render-monitor"></canvas>
+                        </div>
+                        <!-- //bar chart -->
+                    </div>
+                    <div class="card-footer text-muted chart-grid__footer">
+                        Updated 2 hours ago
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6 pl-lg-2 chart-grid">
+                <div class="card text-center card_border">
+                    <div class="card-header chart-grid__header">
+                        Bảng đồ thống kê số lượng bài viết
+                    </div>
+                    <div id="curve_chart" style="width: 400px; height: 300px"></div>
+                    <div class="card-footer text-muted chart-grid__footer">
+                        Updated just now
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>

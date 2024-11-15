@@ -1,0 +1,379 @@
+﻿@*@model List<WebsiteRaoVat.Models.TaiKhoan>
+@using WebsiteRaoVat.Models;*@
+@{
+    ViewBag.Title = "Chat";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<section class="py-3" style="margin-top:10%;">
+    <div class="container">
+        <div class="row" style="background-color: #fff; margin: 1px; ">
+            <div class="col-4" >
+                <div class="row" style="width: 100%;padding:1.25rem">
+                    <h5 style="font-weight:700">Trò chuyện </h5>
+                </div>
+            </div>
+            <div class="col-8" style="border-left: solid 2px; border-left-color: #f5f2f6;">
+                <div class="row" style="width: 100%; padding: 1.25rem 0rem 1.25rem 0rem; float: right ">
+                    <div class="col-11" style="float: left; margin-left: 0px; padding: 0">
+                        <h5 style="font-weight:700; " id="TenUser"></h5>
+                    </div>
+                    
+                    <div class="col-1" style="float:right">     
+                        <div class="w3-dropdown-hover" style="background-color: #fff;">
+                            <img src="~/Images/menu_vertical_50px.png" style="width:20px;height:20px; cursor:pointer" />
+                            <div class="w3-dropdown-content w3-card-4" style="width:200px; padding: 1rem">                        
+                                <div class="w3-container">
+                                    <p id="btnXoa" style="margin-bottom: 0px; cursor: pointer">Xóa trò chuyện</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+        <input hidden value="@ViewBag.ChatUser" id="txtChatUser" />
+        <input hidden value="@ViewBag.Ten" id="txtTenUser" />
+        <div class="row" style="background-color: #fff; margin: 1px; ">
+            <div class="col-4" style="overflow: auto; height: 500px; " id="frmTaiKhoan">
+                @*@foreach (var item in Model)
+                {
+                        <div class="row" style="width:100%;padding:0.5rem;cursor:pointer" name="chonUser" id="@item.Username">
+                            <div class="col-3">
+                                <img src="~/Images/img_avatar.png" width="50" height="50" style="border-radius:50%" />
+                            </div>
+                            <div class="col-9" style="padding:0" id="@item.TenNguoiDung">
+                                <h5 style="font-weight:500; margin-top:5px">@item.TenNguoiDung</h5>
+                            </div>
+                        </div>
+
+
+                }*@
+
+
+
+            </div>
+            <div class="col-8" style="border-left: solid 2px; border-left-color: #f5f2f6;">
+                <div class="row" style=" border-bottom: solid 2px; border-bottom-color: #f5f2f6;">
+                    <div style="overflow: auto; height: 400px; width: 100%;padding:1rem" id="frmChat">
+
+                        @*<div class="row" style="margin-bottom:5px">
+                            <div class="col-6" style="height:auto">
+                                <img style="border-radius: 10px" src="~/Images/1-1_1523988105.jpg" />
+                            </div>
+                            <div class="col-6">
+                                &nbsp;
+                            </div>
+                        </div>
+
+                        <div class="row" style="margin-bottom:5px">
+                            <div class="col-6">
+                                &nbsp;
+                            </div>
+                            <div class="col-6" style="height:auto">
+                                <img style="border-radius: 10px" src="~/Images/1-1_1523988105.jpg" />
+                            </div>
+                        </div>*@
+
+                    </div>
+                </div>
+                <div class="row" style="width: 100%;  padding:1.5rem 1rem">
+
+                    <div class="col-10">
+                        <div class="row" style="border: 3px solid #ebebeb;">
+                            <input type="text" id="txtNoiDung" style="border: none; height: 50px; width: 100%; padding-left: 20px; padding-right: 15px;" value="" />
+
+                            <div class="col-3" id="frmimg" style="margin-left: 20px; padding: 0"></div>
+                        </div>
+                    </div>
+                    <div class="col-1" style="margin-top:10px;">
+                        <div class="_1WwT3" data-test="image-file">
+                            <label class="_3g5Wc" >
+                                <input accept="image/*" class="jMzvB" id="txtimg" name="image" type="file">
+                                <img class="_26Evc" src="~/Images/camera_25px.png" height="30" width="30">
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-1" style="padding: 0; margin-top: 10px;">
+                        <button style="border:none; background-color:#fff" id="btnSend">
+                            <img src="~/Images/paper_plane_25px.png" height="30" width="30" />
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="modal" id="modalXoa" style="background-color: rgba(0,0,0,.5);">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header text-center">
+                <h5 class="modal-title">XÁC NHẬN</h5>
+                <button type="button" class="close" onclick="modalClose()" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Bạn có chắc chắc xóa cuộc hội thoại này
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn" style="background-color: #e7ab3c; color:#fff" id="btnDongYXoa">Đồng ý</button>
+                <button type="button" class="btn btn-default" style="border: solid 1px #d1d1d1" onclick="modalClose()">Đóng</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    ._13mC4 {
+        background-color: #e7ab3c;
+        border: 2px solid #fff;
+        border-radius: 50%;
+        cursor: pointer;
+        padding: 5px;
+        position: absolute;
+    }
+
+    ._1WwT3 {
+        display: inline-block;
+    }
+
+    ._3g5Wc {
+        position: relative;
+        cursor: pointer
+    }
+    .adf {
+        background-color: #fff;
+        border: 2px solid #ebebeb;
+        cursor: pointer;
+        padding: 0px 5px;
+        position: absolute;
+        border-radius: 5px;
+    }
+    input[type="file" i] {
+        background-color: initial;
+        cursor: default;
+        align-items: baseline;
+        color: inherit;
+        text-overflow: ellipsis;
+        white-space: pre;
+        text-align: start !important;
+        padding: initial;
+        border: initial;
+        overflow: hidden !important;
+    }
+
+    .jMzvB {
+        height: 0;
+        overflow: hidden;
+        position: absolute;
+        width: 0;
+    }
+    .imgpr {
+        min-width: 100%;
+        object-fit: cover;
+        height: 150px;
+        width: 150px;
+        padding-bottom:15px;
+
+    }
+</style>
+@section Jsfooter{
+    <script>
+
+        var img = "";
+        var ChatUser = "";
+        $(document).ready(function () {
+            LoaddsTaiKhoan();
+            ChatUser = $('#txtChatUser').val();
+            $('#TenUser').append($('#txtTenUser').val());
+        });
+
+        $(document).on('click', 'div[name="chonUser"]', function () {
+            //alert($(this).attr('id'));
+            ChatUser = $(this).attr('id');
+            $('#TenUser').empty();
+            $('#TenUser').append($(this).find('.col-9').attr('id'));
+            LoadDoanChat();
+        });
+        setInterval(function () {
+            LoadDoanChat();
+            LoaddsTaiKhoan();
+        }, 1000);
+        function LoaddsTaiKhoan() {
+            $.ajax({
+                type: 'get',
+                url: '/Chat/getTaiKhoan',
+                success: function (data) {
+                    $('#frmTaiKhoan').empty();
+                    $.each(data.listtaikhoan, function (k, v) {
+                        var c = `<div class="row" style="width:100%;padding:0.5rem;cursor:pointer" name="chonUser" id=` + v.Username + `>
+                            <div class="col-3">`;
+                        if (v.Hinh != null) {
+                            c += `<img src="` + v.Hinh + `" width="50" height="50" style="border-radius:50%" />`;
+                        } else {
+                            c += `<img src="/Images/img_avatar.png" width="50" height="50" style="border-radius:50%" />`;
+                        }
+                        
+                        c+= `</div>
+                            <div class="col-9" style="padding:0" id="`+v.TenNguoiDung+`">
+                                <h5 style="font-weight:500; margin-top:5px">`+v.TenNguoiDung+`</h5>
+                            </div>
+                        </div>`;
+                        $('#frmTaiKhoan').append(c);
+                    });
+                }
+            })
+        }
+        function LoadDoanChat() {
+            $.ajax({
+                type: 'get',
+                url: '/Chat/getCuocHoiThoai',
+                data: {
+                    username: ChatUser,
+                },
+                success: function (data) {
+                    //console.log(data.listhoithoai);
+                    $('#frmChat').empty();
+                    $.each(data.listhoithoai, function (k, v) {
+                        if (v.NoiDung != null) {
+                            if (v.NguoiNhan != ChatUser) {
+                                var content = `<div class="row" style="margin-bottom:5px">
+                                <div class="col-6" style="height:auto">
+                                    <div style="border-radius: 10px; padding: 0.5rem 1rem; float: left; background-color: #f5f2f6; max-width:300px">
+                                        `+ v.NoiDung + `
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    &nbsp;
+                                </div>
+                            </div>`;
+                                $('#frmChat').append(content);
+                            }
+                            else {
+                                var content = `<div class="row" style="margin-bottom:5px">
+                                <div class="col-6">
+                                        &nbsp;
+                                </div>
+                                <div class="col-6" style="height:auto">
+                                    <div style="border-radius: 10px; padding: 0.5rem 1rem;float: right; background-color: #e7ab3c; color: #fff;max-width:300px ">
+                                        `+ v.NoiDung + `
+                                    </div>
+                                </div>
+                            </div>`;
+                                $('#frmChat').append(content);
+                            }
+                        }
+                        if (v.Hinh != null) {
+                            if (v.NguoiNhan != ChatUser) {
+                                var content = `<div class="row" style="margin-bottom:5px">
+                            <div class="col-6" style="height:auto">
+                                <img style="border-radius: 10px" src="`+ v.Hinh + `" />
+                            </div>
+                            <div class="col-6">
+                                &nbsp;
+                            </div>
+                        </div>`;
+                                $('#frmChat').append(content);
+                            }
+                            else {
+                                var content = `<div class="row" style="margin-bottom:5px">
+                            <div class="col-6">
+                                &nbsp;
+                            </div>
+                            <div class="col-6" style="height:auto">
+                                <img style="border-radius: 10px" src="`+ v.Hinh + `" />
+                            </div>
+                        </div>`;
+                                $('#frmChat').append(content);
+                            }
+                        }
+                    });
+                }
+
+            })
+        }
+    
+
+
+        $('#btnSend').click(function () {
+            if ($('#txtNoiDung').val() != "" || img != "") {
+                $.ajax({
+                    type: 'post',
+                    url: '/Chat/AddMessage',
+                    data: {
+                        username: ChatUser,
+                        noidung: $('#txtNoiDung').val(),
+                        hinh: img,
+                    }, success: function (data) {
+                        LoadDoanChat();
+                        $('#txtNoiDung').val("");
+                        $('#frmimg').empty();
+                        img = "";
+                    }
+                })
+            }
+
+        });
+
+        $("#txtimg").change(function () {
+            if ($('#txtimg').val().length > 0) {
+                if (window.FormData !== undefined) {
+                    var fileupload = $('#txtimg').get(0);
+                    var file = fileupload.files;
+                    var formdata = new FormData();
+                    formdata.append('file', file[0]);
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Home/XuLyFile',
+                        contentType: false, //Khong co hear
+                        processData: false,//Khong Xu Ly Du Lieu
+                        data: formdata,
+                        success: function (ImageData) {
+                            //$('#imgavata').attr('src', ImageData);
+                            $('#frmimg').empty();
+                            img = ImageData;
+                            $('#frmimg').append(`<img src="` + ImageData + `" id="jlhinh" class="imgpr"/>
+                                <div class="adf" name="jlhinh" style="right: 0px; top: 0px;"> X</div>`);
+                            //location.reload();
+                            //alert(img);
+                        }
+                    });
+                }
+            } else {
+                alert("Vui lòng chọn file");
+            }
+        });
+        $(document).on('click', '.adf', function () {
+            $('#' + $(this).attr("name")).remove();
+            $(this).remove();
+            img = "";
+
+        });
+        $('#btnXoa').click(function () {
+            // alert("Bạn có chắc chắn xóa cuộc hội thoại với " + ChatUser);
+            $('#modalXoa').show();
+        })
+        function modalClose() {
+            $('#modalXoa').hide();
+        }
+        $('#btnDongYXoa').click(function () {
+           // alert(ChatUser);
+            $.ajax({
+                type: 'get',
+                url: '/Chat/XoaHoiThoai',
+                data: {
+                    username: ChatUser
+                }, success: function (data) {
+                    if (data.code == 200) {
+                        alert("Đã xóa cuộc hội thoại");
+                        location.reload();
+                    }
+                }
+            })
+        });
+    </script>
+}

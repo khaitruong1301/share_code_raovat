@@ -1,0 +1,442 @@
+﻿<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Chào mừng đến với web rao vặt</title>
+
+    <!-- Template CSS -->
+    <link rel="stylesheet" href="~/Content/Admin/assets/css/style-starter.css">
+
+    <!-- google fonts -->
+    <link href="//fonts.googleapis.com/css?family=Nunito:300,400,600,700,800,900&amp;display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+            var data = google.visualization.arrayToDataTable([
+                ['Tháng', 'Số lượng bài viết', 'Lượt mua quảng cáo'],
+                ['1', @ViewBag.T1, @ViewBag.thang1],
+                ['2', @ViewBag.T2, @ViewBag.thang2],
+                ['3', @ViewBag.T3, @ViewBag.thang3],
+                ['4', @ViewBag.T4, @ViewBag.thang4],
+                ['5', @ViewBag.T5, @ViewBag.thang5],
+                ['6', @ViewBag.T6, @ViewBag.thang6],
+                ['7', @ViewBag.T7, @ViewBag.thang7],
+                ['8', @ViewBag.T8, @ViewBag.thang8],
+                ['9', @ViewBag.T9, @ViewBag.thang9],
+                ['10', @ViewBag.T10,@ViewBag.thang10],
+                ['11', @ViewBag.T11,@ViewBag.thang11],
+                ['12', @ViewBag.T12,@ViewBag.thang12],
+
+            ]);
+
+            var options = {
+                title: 'Biểu đồ thống kê năm 2021',
+                curveType: 'function',
+                legend: { position: 'bottom' }
+            };
+
+            var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            chart.draw(data, options);
+        }
+    </script>
+</head>
+
+<body class="sidebar-menu-collapsed" style="">
+    <div class="se-pre-con" style="display: none;"></div>
+    <section>
+        <!-- sidebar menu start -->
+        <div class="sidebar-menu sticky-sidebar-menu">
+
+            <!-- logo start -->
+            <div class="logo">
+                <h1><a href="index.html">RaoVat</a></h1>
+            </div>
+
+            <!-- if logo is image enable this -->
+            <!-- image logo --
+            <div class="logo">
+              <a href="index.html">
+                <img src="image-path" alt="Your logo" title="Your logo" class="img-fluid" style="height:35px;" />
+              </a>
+            </div>
+            <!-- //image logo -->
+
+            <div class="logo-icon text-center">
+                <a href="~/Admin/Admin/Index" title="logo"><img src="~/Content/Admin/assets/images/logo.png" alt="logo-icon"> </a>
+            </div>
+            <!-- //logo end -->
+
+            <div class="sidebar-menu-inner">
+
+                <!-- sidebar nav start -->
+                <ul class="nav nav-pills nav-stacked custom-nav">
+                    <li class="active">
+                        <a href="~/Admin/Admin/Index"><i class="fa fa-home"></i><span> Trang chủ</span></a>
+                    </li>
+                    <li>
+                        <a href="~/Admin/Admin/DanhMuc">
+                            <i class="fa fa-cogs"></i>
+                            <span>Quản lý danh mục</span>
+                        </a>
+                        <ul class="sub-menu-list">
+
+                            <li><a href="~/Admin/Admin/ThemDanhMuc">Thêm danh mục sản phẩm</a> </li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="~/Admin/Admin/LoaiSP"><i class="fa fa-table"></i> <span>Quản lí loại sản phẩm</span></a>
+                        <ul class="sub-menu-list">
+
+                            <li><a href="~/Admin/Admin/ThemLoaiSP">Thêm mới loại sản phẩm</a> </li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="~/Admin/Admin/DSBaiViet"><i class="fa fa-file-text"></i> <span>Quản lí bài viết</span></a>
+                    </li>
+
+                </ul>
+                <!-- //sidebar nav end -->
+                <!-- toggle button start -->
+                <a class="toggle-btn">
+                    <i class="fa fa-angle-double-left menu-collapsed__left"></i>
+                    <i class="fa fa-angle-double-right menu-collapsed__right"></i>
+                </a>
+                <!-- //toggle button end -->
+            </div>
+        </div>
+
+        <!-- //sidebar menu end -->
+        <!-- header-starts -->
+        <div class="header sticky-header">
+
+            <!-- notification menu start -->
+            <div class="menu-right">
+                <div class="navbar user-panel-top">
+                    <div class="search-box">
+                        <form action="#search-results.html" method="get">
+                            <input class="search-input" placeholder="Search Here..." type="search" id="search">
+                            <button class="search-submit" value=""><span class="fa fa-search"></span></button>
+                        </form>
+                    </div>
+                    <div class="user-dropdown-details d-flex">
+                        <div class="profile_details_left">
+                            <ul class="nofitications-dropdown">
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell-o"></i><span class="badge blue">3</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <div class="notification_header">
+                                                <h3>You have 3 new notifications</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar1.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>Johnson purchased template</p>
+                                                    <span>Just Now</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="odd">
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar2.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>New customer registered </p>
+                                                    <span>1 hour ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar3.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>Lorem ipsum dolor sit amet </p>
+                                                    <span>2 hours ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="notification_bottom">
+                                                <a href="#all" class="bg-primary">See all notifications</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <li class="dropdown">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-comment-o"></i><span class="badge blue">4</span></a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <div class="notification_header">
+                                                <h3>You have 4 new messages</h3>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar1.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>Johnson purchased template</p>
+                                                    <span>Just Now</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li class="odd">
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar2.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>New customer registered </p>
+                                                    <span>1 hour ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar3.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>Lorem ipsum dolor sit amet </p>
+                                                    <span>2 hours ago</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#" class="grid">
+                                                <div class="user_img"><img src="~/Content/Admin/assets/images/avatar1.jpg" alt=""></div>
+                                                <div class="notification_desc">
+                                                    <p>Johnson purchased template</p>
+                                                    <span>Just Now</span>
+                                                </div>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <div class="notification_bottom">
+                                                <a href="#all" class="bg-primary">See all messages</a>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="profile_details">
+                            <ul>
+                                <li class="dropdown profile_details_drop">
+                                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" id="dropdownMenu3" aria-haspopup="true" aria-expanded="false">
+                                        <div class="profile_img">
+                                            <img src="~/Content/Admin/assets/images/profileimg.jpg" class="rounded-circle" alt="">
+                                            <div class="user-active">
+                                                <span></span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu drp-mnu" aria-labelledby="dropdownMenu3">
+                                        <li class="user-info">
+                                            @{
+                                                WebsiteRaoVat.Models.TaiKhoan taikhoan = (WebsiteRaoVat.Models.TaiKhoan)Session["TaiKhoan"];
+                                                <h5 class="user-name">@taikhoan.TenNguoiDung</h5>
+                                             }
+                                            
+                                            <span class="status ml-2">Available</span>
+                                        </li>
+                                        <li> <a href="#"><i class="lnr lnr-cog"></i>Setting</a> </li>
+                                        <li class="logout"> <a href="/login/DangXuat"><i class="fa fa-power-off"></i> Logout</a> </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--notification menu end -->
+        </div>
+        <!-- //header-ends -->
+        <!-- main content start -->
+        <div class="main-content">
+
+            <!-- content -->
+            <div class="container-fluid content-top-gap">
+
+
+                <!-- statistics data -->
+                @*<div class="statistics">
+                        <div class="row">
+                            <div class="col-xl-6 pr-xl-2">
+                                <div class="row">
+                                    <div class="col-sm-6 pr-sm-2 statistics-grid">
+                                        <div class="card card_border border-primary-top p-4">
+                                            <i class="lnr lnr-users"> </i>
+                                            <h3 class="text-primary number">@ViewBag.tongsl</h3>
+                                            <p class="stat-text">Số lượng người tham gia</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 pl-sm-2 statistics-grid">
+                                        <div class="card card_border border-primary-top p-4">
+                                            <i class="lnr lnr-eye"> </i>
+                                            <h3 class="text-secondary number">@ViewBag.Soluongtruycap</h3>
+                                            <p class="stat-text">Số lượng người truy cập</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 pl-xl-2">
+                                <div class="row">
+                                    <div class="col-sm-6 pr-sm-2 statistics-grid">
+                                        <div class="card card_border border-primary-top p-4">
+                                            <i class="lnr lnr-cloud-download"> </i>
+                                            <h3 class="text-success number">@ViewBag.tongbaiviet</h3>
+                                            <p class="stat-text">Số lượng bài viết</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6 pl-sm-2 statistics-grid">
+                                        <div class="card card_border border-primary-top p-4">
+                                            <i class="lnr lnr-cart"> </i>
+                                            <h3 class="text-danger number">1,250k</h3>
+                                            <p class="stat-text">Số lượng quảng cáo</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>*@
+
+                <div>
+                    @RenderBody()
+                </div>
+
+                <!--<div class="chart">
+                    <div class="row">
+                        <div class="col-lg-6 pr-lg-2 chart-grid">
+                            <div class="card text-center card_border">
+                                <div class="card-header chart-grid__header">
+                                    Bar Chart
+                                </div>
+                                <div class="card-body">-->
+                <!-- bar chart -->
+                <!--<div id="container">
+                    <div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                    <canvas id="barchart" width="1032" height="516" style="display: block; height: 344px; width: 688px;" class="chartjs-render-monitor"></canvas>
+                </div>-->
+                <!-- //bar chart -->
+                <!--</div>
+                                <div class="card-footer text-muted chart-grid__footer">
+                                    Updated 2 hours ago
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 pl-lg-2 chart-grid">
+                            <div class="card text-center card_border">
+                                <div class="card-header chart-grid__header">
+                                    Line chart 2021
+
+                                </div>
+                                <div id="curve_chart" style="width: 600px; height: 300px"></div>
+                                <div class="card-footer text-muted chart-grid__footer">
+                                    Updated just now
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>-->
+
+
+            </div>
+            <!-- //content -->
+        </div>
+        <!-- main content end-->
+    </section>
+    <!--footer section start-->
+    @*<footer class="dashboard" style="background-color:#fff">
+            <p>© 2021 Collective. All Rights Reserved</p>
+        </footer>*@
+    <!--footer section end-->
+    <!-- move top -->
+    <button onclick="topFunction()" id="movetop" class="bg-primary" title="Go to top">
+        <span class="fa fa-angle-up"></span>
+    </button>
+    <script>
+        // When the user scrolls down 20px from the top of the document, show the button
+        window.onscroll = function () {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("movetop").style.display = "block";
+            } else {
+                document.getElementById("movetop").style.display = "none";
+            }
+        }
+
+        // When the user clicks on the button, scroll to the top of the document
+        function topFunction() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
+        }
+    </script>
+    <!-- /move top -->
+
+
+    <script src="~/Content/Admin/assets/js/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/Admin/assets/js/jquery-1.10.2.min.js"></script>
+
+    <!-- chart js -->
+    <script src="~/Content/Admin/assets/js/Chart.min.js"></script>
+    <script src="~/Content/Admin/assets/js/utils.js"></script>
+    <!-- //chart js -->
+    <!-- Different scripts of charts.  Ex.Barchart, Linechart -->
+    <script src="~/Content/Admin/assets/js/bar.js"></script>
+    <script src="~/Content/Admin/assets/js/linechart.js"></script>
+    <!-- //Different scripts of charts.  Ex.Barchart, Linechart -->
+
+
+    <script src="~/Content/Admin/assets/js/jquery.nicescroll.js"></script>
+    <script src="~/Content/Admin/assets/js/scripts.js"></script>
+
+    <!-- close script -->
+    <script>
+        var closebtns = document.getElementsByClassName("close-grid");
+        var i;
+
+        for (i = 0; i < closebtns.length; i++) {
+            closebtns[i].addEventListener("click", function () {
+                this.parentElement.style.display = 'none';
+            });
+        }
+    </script>
+    <!-- //close script -->
+    <!-- disable body scroll when navbar is in active -->
+    <script>
+        $(function () {
+            $('.sidebar-menu-collapsed').click(function () {
+                $('body').toggleClass('noscroll');
+            })
+        });
+    </script>
+    <!-- disable body scroll when navbar is in active -->
+    <!-- loading-gif Js -->
+    <script src="~/Content/Admin/assets/js/modernizr.js"></script>
+    <script>
+        $(window).load(function () {
+            // Animate loader off screen
+            $(".se-pre-con").fadeOut("slow");;
+        });
+    </script>
+    <!--// loading-gif Js -->
+    <!-- Bootstrap Core JavaScript -->
+    <script src="~/Content/Admin/assets/js/bootstrap.min.js"></script>
+
+    @RenderSection("Jsfooter", required: false)
+
+
+</body>
+</html>

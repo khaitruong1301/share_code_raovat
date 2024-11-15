@@ -1,0 +1,157 @@
+﻿@model WebsiteRaoVat.Models.TaiKhoan
+@{
+    ViewBag.Title = "TrangCaNhan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<section class="py-3" style="margin-top:11%">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px;">
+
+            <div class="col-6">
+                <div class="row" style="padding:1rem">
+                    <div class="col-3" style="padding:0">
+                        @if (Model.Hinh != null)
+                        {
+                            <img src="@Model.Hinh" style="object-fit:cover; border-radius:50%" />
+                        }
+                        else
+                        {
+                            <img src="~/Images/img_avatar.png" style="object-fit: cover; border-radius: 50%" />
+                        }
+                    </div>
+                    <div class="col-8">
+                        <h4 style="font-weight:800; margin-top:10px">@Model.TenNguoiDung</h4>
+                        <p style=" margin-bottom: 0px">@Model.Username</p>
+                        <input hidden id="txtUsername" value="@Model.Username" />
+                        @if (Session["TaiKhoan"] != null)
+                        {
+                            WebsiteRaoVat.Models.TaiKhoan taikhoan = (WebsiteRaoVat.Models.TaiKhoan)Session["TaiKhoan"];
+                            if (taikhoan.Username == Model.Username)
+                            {
+                                <a class="btn" href="/TinDang/SuaTrangCaNhan/@Model.Username" style="border-radius: 35px; border: solid 2px #d1d1d1;">Chỉnh sửa trang cá nhân</a>
+                            }
+                        }
+
+                    </div>
+
+                </div>
+
+                <div class="row" style="margin-top:2rem">
+
+                </div>
+            </div>
+            <div class="col-6" style="border-left:solid 1px; border-left-color:rgb(229,229,229)">
+                <div class="row" style="padding:1rem">
+                    <table class="table table-borderless">
+                        <tbody id="tblInfo">
+                            <tr>
+                                <th scope="row" width="40%">Ngày tham gia</th>
+                                <td>@Model.NgayThamGia.Value.ToShortDateString()</td>
+                            </tr>
+                            @*<tr>
+                                <th scope="row">Địa chỉ</th>
+                                <td>@Model.DiaChi</td>  
+                            </tr>*@
+                            
+                            
+                        </tbody>
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+<section class="py-0">
+    <div class="container">
+        <div class="row" style="background-color:#fff; margin:1px;padding:1rem" id="frmDaiDang">
+            <h5 style="font-weight:700; margin-left:0.5rem">Tin đang đăng</h5>
+            @*<div class="row pn-product" style="background-color:#fff; margin:1px; padding:0.5rem;">
+                <div class="col-2" style="object-fit:cover; padding:0.5rem; ">
+                    <img src="~/Images/anvat.jpg" />
+                </div>
+                <div class="col-6" style="padding:0.5rem;">
+                    <h4 style="margin-bottom:5px">Đồ ăn Hàn Quốc</h4>
+                    <h4 style="color:red; font-weight:700">2000000</h4>
+                </div>
+                <div class="col-4" style="padding:0.5rem; float:right">
+                    <div class="icon" style="float:right;">
+                        <i class="icon_heart_alt" style="font-size:25px"></i>
+                    </div>
+                </div>
+            </div>*@
+            
+
+        </div>
+
+    </div>
+
+</section>
+@section Jsfooter{
+    <script>
+        $(document).ready(function () {
+            LoadTongSP();
+            LoadSP();
+        });
+        function LoadSP() {
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/getBaiDangUser',
+                data: {
+                    username: $('#txtUsername').val()
+                },
+                success: function (data) {
+                    $.each(data.lstBaiDang, function (k, v) {
+                        var content = `<div class="row pn-product" name="frmSP" id="`+v.MaBaiDang+`" style="background-color:#fff; margin:1px; padding:0.5rem; width:100%" >
+            <div class="col-2" style="object-fit:fill; padding:0.5rem;">
+                <img src="`+ v.HinhAnh + `" />
+            </div>
+            <div class="col-6" style="padding:0.5rem;">
+                <h4 style="margin-bottom:5px">`+ v.TieuDe + `</h4>
+                <h4 style="color:red; font-weight:700">`+ v.Gia + `</h4>
+            </div>
+            <div class="col-4" style="padding:0.5rem; float:right">
+                <div class="icon" style="float:right;">
+                    <i class="icon_heart_alt" style="font-size:25px" ></i>
+                </div>
+            </div>
+        </div>`;
+                        
+                        $('#frmDaiDang').append(content);
+                    });
+                }
+            })
+        }
+        function LoadTongSP() {
+            $.ajax({
+                type: 'get',
+                url: '/TinDang/getTongSP',
+                data: {
+                    username: $('#txtUsername').val(),
+                },
+                success: function (data) {
+                    var c = `<tr>
+                                <th scope="row">Sản phẩm đang bán</th>
+                                <td>`+ data.spdangban + `</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Sản phẩm đã bán</th>
+                                <td>`+ data.spdaban + `</td>
+                            </tr>`;
+                    $('#tblInfo').append(c);
+                }
+
+            });
+        }
+        $(document).on('click', "div[name='frmSP']", function () {
+            //alert($(this).attr('id'));
+            window.location = '/Home/BaiDang/' + $(this).attr('id');
+
+        });
+    </script>
+    }
